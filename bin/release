@@ -3,5 +3,5 @@
 cat <<EOF
 ---
 default_process_types:
-  worker: bin/minecraft $PORT --ulimit 384
+  worker: bin/minecraft $PORT
 EOF
