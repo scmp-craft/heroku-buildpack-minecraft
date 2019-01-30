@@ -41,8 +41,8 @@ case $limit in
 esac
 
 if [ "$RESTORE_URL" ]; then
-  echo "Download and restore world..."
-  eval "wget --no-check-certificate -O ${backup_filename} ${RESTORE_URL}; tar -xvzf ${backup_filename}"
+  echo "Download and restore world... \"${RESTORE_URL}\""
+  eval "wget --no-check-certificate -O ${backup_filename} \"${RESTORE_URL}\"; tar -xvzf ${backup_filename}"
   restore_pid=$!
 fi
 
