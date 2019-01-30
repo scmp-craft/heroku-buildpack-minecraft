@@ -21,7 +21,7 @@ bin/sync
 eval "while true; do sleep ${AWS_SYNC_INTERVAL:-60}; bin/sync; done &"
 sync_pid=$!
 
-if [ -z "$RESTORE_URL" ]; then
+if [ "$RESTORE_URL" ]; then
   echo "Download and restore world..."
   eval "wget -O ${backup_filename} ${RESTORE_URL}; tar -xvzf ${backup_filename}"
   restore_pid=$!
