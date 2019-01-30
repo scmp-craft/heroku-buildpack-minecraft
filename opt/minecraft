@@ -23,7 +23,7 @@ sync_pid=$!
 
 if [ "$RESTORE_URL" ]; then
   echo "Download and restore world..."
-  eval "wget -O ${backup_filename} ${RESTORE_URL}; tar -xvzf ${backup_filename}"
+  eval "wget --no-check-certificate -O ${backup_filename} ${RESTORE_URL}; tar -xvzf ${backup_filename}"
   restore_pid=$!
 fi
 
@@ -52,7 +52,7 @@ main_pid=$!
 
 # backup world
 echo "Starting backup... ${backup_filename}"
-eval "tar -czvf ${backup_filename} ./world"
+# eval "tar -czvf ${backup_filename} ./world"
 eval "while true; do sleep ${BACKUP_INTERVAL:-900}; rm -rf ${backup_filename}; tar -czvf ${backup_filename} ./world; done &"
 backup_pid=$!
 
