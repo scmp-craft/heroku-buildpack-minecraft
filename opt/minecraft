@@ -42,7 +42,7 @@ esac
 
 if [ "$RESTORE_URL" ]; then
   echo "Download and restore world... \"${RESTORE_URL}\""
-  eval "wget --no-check-certificate -O ${backup_filename} \"${RESTORE_URL}\"; tar -xvzf ${backup_filename}"
+  eval "wget --no-check-certificate -O ${backup_filename} \"${RESTORE_URL}\"; tar -xvzf ${backup_filename} &"
   restore_pid=$!
 else
   restore_pid=$!
