@@ -21,12 +21,6 @@ bin/sync
 eval "while true; do sleep ${AWS_SYNC_INTERVAL:-60}; bin/sync; done &"
 sync_pid=$!
 
-if [ "$RESTORE_URL" ]; then
-  echo "Download and restore world..."
-  eval "wget --no-check-certificate -O ${backup_filename} ${RESTORE_URL}; tar -xvzf ${backup_filename}"
-  restore_pid=$!
-fi
-
 # create server config
 echo "server-port=${mc_port}" >> /app/server.properties
 for f in whitelist banned-players banned-ips ops; do
@@ -46,6 +40,13 @@ case $limit in
   ;;
 esac
 
+if [ "$RESTORE_URL" ]; then
+  echo "Download and restore world..."
+  eval "wget --no-check-certificate -O ${backup_filename} ${RESTORE_URL}; tar -xvzf ${backup_filename}"
+  restore_pid=$!
+fi
+
+wait $!
 echo "Starting: minecraft ${mc_port}"
 eval "screen -L -h 2048 -dmS minecraft java -Xmx${heap} -Xms${heap} -jar minecraft.jar nogui"
 main_pid=$!
