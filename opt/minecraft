@@ -42,7 +42,7 @@ esac
 
 if [ "$RESTORE_URL" ]; then
   echo "Download and restore world... \"${RESTORE_URL}\""
-  eval "wget --no-check-certificate -O ${backup_filename} \"${RESTORE_URL}\"; tar -xvzf ${backup_filename} &"
+  eval "wget --no-check-certificate -O ${backup_filename} \"${RESTORE_URL}\"; rm -rf ./world; tar -xvzf ${backup_filename} &"
   restore_pid=$!
 else
   restore_pid=$!
@@ -50,11 +50,11 @@ fi
 
 wait $restore_pid
 echo "Starting: minecraft ${mc_port}"
-eval "screen -L -h 2048 -dmS minecraft java -Xmx${heap} -Xms${heap} -jar minecraft.jar nogui &"
+eval "screen -L -h 2048 -dmS minecraft java -Xmx${heap} -Xms${heap} -jar minecraft.jar nogui"
 main_pid=$!
 
 # backup world
-wait $main_pid
+wait $restore_pid
 echo "Starting backup... ${backup_filename}"
 # eval "tar -czvf ${backup_filename} ./world"
 eval "while true; do sleep ${BACKUP_INTERVAL:-900}; rm -rf ${backup_filename}; tar -czvf ${backup_filename} ./world; done &"
