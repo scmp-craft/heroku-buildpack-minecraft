@@ -43,6 +43,13 @@ echo "Starting: minecraft ${mc_port}"
 eval "screen -L -h 2048 -dmS minecraft java -Xmx${heap} -Xms${heap} -jar minecraft.jar nogui"
 main_pid=$!
 
+filename="world.tar.gz"
+# backup world
+echo "Starting backup..."
+eval "tar -czvf ${filename} ./world"
+eval "while true; do sleep ${AWS_SYNC_INTERVAL:-900}; rm -rf ${filename}; tar -czvf ${filename} ./world; done &"
+backup_pid=$!
+
 # Flush the logfile every second, and ensure that the logfile exists
 screen -X "logfile 1" && sleep 1
 
