@@ -50,10 +50,11 @@ fi
 
 wait $restore_pid
 echo "Starting: minecraft ${mc_port}"
-eval "screen -L -h 2048 -dmS minecraft java -Xmx${heap} -Xms${heap} -jar minecraft.jar nogui"
+eval "screen -L -h 2048 -dmS minecraft java -Xmx${heap} -Xms${heap} -jar minecraft.jar nogui &"
 main_pid=$!
 
 # backup world
+wait $main_pid
 echo "Starting backup... ${backup_filename}"
 # eval "tar -czvf ${backup_filename} ./world"
 eval "while true; do sleep ${BACKUP_INTERVAL:-900}; rm -rf ${backup_filename}; tar -czvf ${backup_filename} ./world; done &"
